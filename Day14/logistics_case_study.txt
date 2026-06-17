@@ -1,0 +1,66 @@
+A strong answer would be:
+
+**Framework Chosen:** **Haystack** (primary) + Ticketing API integration
+
+**Step 1:**
+Use a text classification pipeline to automatically categorize incoming emails 
+(billing, delivery issue, refund request, complaint, etc.).
+
+**Step 2:**
+Store company policies, FAQs, and support documents in a document store and index 
+them for retrieval.
+
+**Step 3:**
+For each classified email, use Retrieval-Augmented Generation (RAG) to retrieve the most 
+relevant policy documents and provide them as context to an LLM.
+
+**Step 4:**
+Generate a draft response using the retrieved documents and email content.
+
+**Step 5:**
+Apply confidence scoring or business rules to identify complex or low-confidence cases.
+
+**Step 6:**
+Automatically send complex cases to a human agent through a ticketing API 
+(e.g., ServiceNow, Jira, Zendesk) while simple cases are handled using the generated 
+draft reply.
+
+**Justification:**
+Haystack is well suited because it provides built-in support for document indexing, 
+retrieval, RAG pipelines, and production-grade NLP workflows. The framework can efficiently 
+process large volumes of emails, retrieve relevant policy documents, generate grounded 
+responses, and integrate with external APIs for human escalation, making it ideal for an 
+end-to-end customer support automation system.
+
+### Architecture Flow
+
+
+Customer Email
+      ↓
+Email Classification
+      ↓
+Category Identified
+      ↓
+Document Retrieval (Policy DB)
+      ↓
+LLM Draft Reply Generation
+      ↓
+Confidence Check
+   ↙       ↘
+High      Low
+ ↓          ↓
+Send Reply  Create Ticket via API
+
+
+### Why not LangChain?
+
+LangChain can also build this solution, especially for orchestration and API integrations, 
+but Haystack is often preferred when the core requirement is large-scale retrieval and 
+RAG over enterprise documents.
+
+### Why not LlamaIndex?
+
+LlamaIndex excels at connecting and querying large document collections, but this use case 
+requires a complete production workflow involving classification, retrieval, generation, 
+routing, and API-based escalation. Haystack provides a more end-to-end pipeline-oriented 
+architecture for such enterprise support systems.

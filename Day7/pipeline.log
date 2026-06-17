@@ -1,0 +1,4 @@
+2026-06-05 11:27:25.207 | INFO     | __main__:<module>:38 - Config loaded — schedule: 0 6 * * * | output: data\processed
+2026-06-05 11:28:28.717 | INFO     | __main__:read:52 - Generated 1,000 synthetic rows (seed=42)
+2026-06-05 11:28:53.523 | INFO     | __main__:validate_batch:55 - Validation: 879 valid | 121 errors | 87.9% pass rate
+2026-06-05 11:28:53.526 | WARNING  | __main__:validate_batch:61 - Pass rate 87.9% is below threshold 95% — investigate upstream data

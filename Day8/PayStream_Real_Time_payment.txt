@@ -1,0 +1,8 @@
+| ID | Integration                 | Classification | Key deciding factor                                                                   |
+| -- | --------------------------- | -------------- | ------------------------------------------------------------------------------------- |
+| A  | Settlement command          | **Queue**      | Exactly one ledger service must process it, with retry and no duplicate/lost message. |
+| B  | Payment received broadcast  | **Event Bus**  | Multiple independent services react to the same event.                                |
+| C  | SMS / push notifications    | **Queue**      | Work is distributed across notification workers; one worker processes one message.    |
+| D  | Fraud score request         | **Queue**      | One-to-one request/reply; Payment Core waits for one response.                        |
+| E  | Account state change events | **Event Bus**  | It is an event/fact that other services may subscribe to.                             |
+| F  | End-of-day reconciliation   | **Queue**      | A specific background job/task should be processed reliably by a worker.              |
