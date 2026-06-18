@@ -1,0 +1,45 @@
+Chunking Analaysis:
+
+The 256-token configuration produced the lowest latency (1.68s) but fragmented the document 
+into 13 chunks, increasing the risk that related information would be split across multiple 
+chunks. The 1024-token configuration reduced the number of chunks to 4 and achieved a 
+latency of 1.88s, but larger chunks may include irrelevant information that can reduce 
+retrieval precision. The 512-token configuration produced 7 chunks and the highest latency 
+(2.40s), likely because each retrieved chunk contained more contextual information that 
+required additional processing by the LLM. 
+
+---Despite the higher latency, 512-token chunks 
+provided the best balance between context preservation and retrieval effectiveness, 
+making them the preferred choice for this financial RAG system.
+
+1. What faithfulness score did you achieve? How does it compare to the FinSight target of ≥ 0.85?
+
+- We have faithfulness score of 0.80, this is slightly below the FinSight target of 0.85 by 0.05
+
+
+
+2. Which chunk size gave the best trade-off between faithfulness and latency?
+
+512 tokens-  provided the best balance between retrieval quality and response latency.
+It preserved sufficient context while keeping processing time reasonable.
+
+
+
+
+3. What types of queries failed? Why might the RAG pipeline struggle with them?
+
+- Queries requiring 'calculations and multi-step reasoning' were more challenging.
+- For example, calculating the percentage of revenue from iPhone sales required retrieving 
+multiple values and 
+performing arithmetic.
+- The pipeline may struggle when relevant information is spread across multiple chunks.
+
+
+
+4. How would you adapt this pipeline for 10,000 PDFs ingested daily?
+
+- Use distributed ingestion and batch embedding generation.
+- tore embeddings in a scalable vector database such as Microsoft.
+- Implement hybrid retrieval (FAISS + BM25) and reranking.
+- Use autoscaling cloud infrastructure and automated monitoring for performance and 
+evaluation.
