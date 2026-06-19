@@ -1,0 +1,9 @@
+{
+    "timestamp": "2026-06-19T12:25:13.733067",
+    "total_faces_detected": 23,
+    "emotion_counts": {
+        "neutral": 17,
+        "sad": 6
+    },
+    "dominant_emotion": "neutral"
+}
