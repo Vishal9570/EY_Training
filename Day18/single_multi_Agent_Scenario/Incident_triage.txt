@@ -1,0 +1,88 @@
+
+
+
+
+
+# I Choose **Multi-agent architecture**.
+
+### Why I choose multi-agent?
+
+I choose mult-agent because This use case has many independent tasks that can run at the same time:
+
+* Check Datadog metrics
+* Check GitHub deployment logs
+* Check AWS RDS slow-query logs
+* Decide rollback/restart
+* Ask human approval if confidence is below 80%
+* Post final RCA to Slack
+
+A single agent can do this, but it becomes overloaded. Multi-agent is better because each agent can specialize.
+
+### Block Diagram
+
+```text
+Alert: p99 API latency spike
+          |
+          v
+ Incident Coordinator Agent
+          |
+          +------------------------+
+          |                        |
+          v                        v
+ Datadog Metrics Agent      GitHub Deployment Agent
+          |                        |
+          +-----------+------------+
+                      |
+                      v
+              RDS Log Agent
+                      |
+                      v
+          Root Cause Analysis Agent
+                      |
+                      v
+        Confidence Check / HITL Gate
+              |              |
+      Confidence >= 80%   Confidence < 80%
+              |              |
+              v              v
+     Auto Remediation     Human Approval
+     Agent                Required
+              |              |
+              +------v-------+
+                     |
+                     v
+        Rollback / Pod Restart
+                     |
+                     v
+           Slack RCA Reporter
+```
+
+### I would choose :-
+
+**1. Incident Coordinator Agent**
+This is the main controller. It receives the alert and assigns work to other agents.
+
+**2. Datadog Metrics Agent**
+Checks API latency, pod health, CPU, memory, and identifies degraded pods.
+
+**3. GitHub Deployment Agent**
+Checks recent deployment logs to see if a new release caused the latency spike.
+
+**4. RDS Log Agent**
+Checks AWS RDS slow-query logs to find database-related root causes.
+
+**5. RCA Agent**
+Combines findings from Datadog, GitHub, and RDS and decides the most likely root cause.
+
+**6. Remediation Agent**
+Executes rollback or pod restart using kubectl. This should only run if confidence is high.
+
+**7. Human Approval Agent**
+If confidence is below 80%, it asks a human before taking action.
+
+**8. Slack Reporter Agent**
+Posts the final structured RCA to the `#incidents` Slack channel. This runs last.
+
+### Final explanation
+
+I would choose a **multi-agent architecture** because the incident requires concurrent investigations, different tool integrations, and a human-in-the-loop approval gate. Each agent has a specialized responsibility, which makes the system scalable, modular, and easier to debug.
