@@ -7,9 +7,9 @@ Original file is located at
     https://colab.research.google.com/drive/1NPhWNm8O6tJ3PkW6V6L6NNGYhvjEe6ee
 """
 
-!pip install -q autogenstudio pyngrok
+#!pip install -q autogenstudio pyngrok
 
-!autogenstudio version
+#!autogenstudio version
 
 import os
 import getpass
@@ -20,7 +20,7 @@ if "GROQ_API_KEY" not in os.environ:
 
 "NGROK_AUTH_TOKEN" ==getpass.getpass("GROQ_API_KEY")
 
-!ngrok config add-authtoken "ngrok key"
+#!ngrok config add-authtoken "ngrok key"
 
 #For running Autogen Studio in google colab
 
